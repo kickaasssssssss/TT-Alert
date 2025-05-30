@@ -1,11 +1,21 @@
 const alertQueue = [];
 let isShowing = false;
 
-// Get URL parameters
+// URL Parameters
 const params = new URLSearchParams(window.location.search);
-const alertDuration = parseInt(params.get('duration')) || 5000; // in milliseconds
-const alertDurationSec = (alertDuration / 1000) + 's'; // convert to seconds for CSS
+const alertDuration = parseInt(params.get('duration')) || 5000;
+const alertDurationSec = (alertDuration / 1000) + 's';
 
+// Default sound (simple, reliable beep)
+const defaultSoundURL = 'https://www.myinstants.com/media/sounds/kyahh-walter.mp3';
+const soundURL = params.get('sound') || defaultSoundURL;
+let isMuted = params.get('mute') === '1';
+
+// Audio object
+const alertSound = new Audio(soundURL);
+alertSound.volume = 1; // adjust volume if needed
+
+// Message listener
 window.addEventListener('message', (event) => {
   if (event.data.type === 'tiktok-alert') {
     alertQueue.push(event.data.data);
@@ -36,7 +46,6 @@ function processQueue() {
     alert.classList.add('default');
   }
 
-  // Set dynamic duration for the animation
   alert.style.setProperty('--duration', alertDurationSec);
 
   alert.innerHTML = `
@@ -49,15 +58,15 @@ function processQueue() {
   const container = document.getElementById('alert-container');
   container.appendChild(alert);
 
-  // Wait for the alert duration, then remove and show next
+  if (!isMuted) {
+    alertSound.currentTime = 0;
+    alertSound.play().catch(e => {
+      console.warn('Alert sound play prevented:', e);
+    });
+  }
+
   setTimeout(() => {
     alert.remove();
     processQueue();
   }, alertDuration);
-}
-
-function clearAlerts() {
-  alertQueue.length = 0;
-  document.getElementById('alert-container').innerHTML = '';
-  isShowing = false;
 }
