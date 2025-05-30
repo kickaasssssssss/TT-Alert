@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TikTok Alert</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    #alert {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.1);
+      border: 2px solid #fff;
+      padding: 20px 40px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 2em;
+      opacity: 0;
+      transition: opacity 0.5s, transform 0.5s;
+      pointer-events: none;
+      user-select: none;
+    }
+    #alert.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="alert"></div>
+
+  <script>
+    const alertBox = document.getElementById('alert');
+
+    function showAlert(text) {
+      alertBox.textContent = text;
+      alertBox.classList.add('show');
+      setTimeout(() => {
+        alertBox.classList.remove('show');
+      }, 4000);
+    }
+
+    // Replace with your actual WebSocket server URL
+    const socket = new WebSocket('ws://127.0.0.1:62024');
+
+    socket.onopen = () => {
+      console.log('WebSocket connected');
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        if (data.platform === 'TikTok' && data.data && data.data.type) {
+          const eventData = data.data;
+
+          if (eventData.type === 'sub') {
+            showAlert(`🎉 New Subscriber: ${eventData.username}`);
+          } else if (eventData.type === 'gift') {
+            showAlert(`🎁 ${eventData.username} sent ${eventData.giftName} x${eventData.amount}`);
+          } else if (eventData.type === 'follow') {
+            showAlert(`👤 New Follower: ${eventData.username}`);
+          }
+        }
+      } catch (err) {
+        console.error('Error parsing message:', err);
+      }
+    };
+
+    socket.onerror = (err) => {
+      console.error('WebSocket error:', err);
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
+  </script>
+</body>
+</html>
