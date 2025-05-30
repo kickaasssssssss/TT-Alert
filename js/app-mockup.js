@@ -514,69 +514,6 @@ function generateMockEvent() {
     
         break;
 
-        case 'tiktok-chat' :
-
-            var data = {
-                userId: user.name.toLowerCase(),
-                nickname: user.name,
-                profilePictureUrl: fakeAvatar,
-                isSubscriber: Math.random() < 0.2,
-                isModerator: Math.random() < 0.1,
-                isOwner: Math.random() < 0.05,
-
-                emotes: {},
-                
-                comment: messagetext,
-
-                msgId: messageId,
-            };
-
-            tiktokChatMessage(data);
-    
-        break;
-        case 'tiktok-follow' :
-
-            var data = {
-                userId: user.name.toLowerCase(),
-                nickname: user.name,
-                profilePictureUrl: fakeAvatar,
-                msgId: messageId,
-            };
-
-            tiktokFollowMessage(data);
-
-        break;
-        case 'tiktok-sub' :
-
-            var data = {
-                userId: user.name.toLowerCase(),
-                nickname: user.name,
-                profilePictureUrl: fakeAvatar,
-                msgId: messageId,
-                subMonth: Math.floor(Math.random() * 50) + 1
-            };
-
-            tiktokSubMessage(data);
-
-        break;
-        case 'tiktok-gift' :
-
-            var data = {
-                userId: user.name.toLowerCase(),
-                nickname: user.name,
-                profilePictureUrl: fakeAvatar,
-                msgId: messageId,
-
-                giftName: tiktokGift.name,
-                repeatCount: Math.floor(Math.random() * 50) + 1,
-                diamondCount: tiktokGift.coins,
-            };
-
-            tiktokGiftMessage(data);
-
-
-        break;
-
         case 'streamlabs-tip' :
 
             var data = {
