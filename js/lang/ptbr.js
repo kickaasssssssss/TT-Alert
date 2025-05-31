@@ -17,6 +17,7 @@ const ptbr = {
   // Override texts if present in URL
   tiktok: {
     follow: () => `${urlParams.followText || 'followed the channel'}`,
+    share : () => `shared the live!`,
     sub: ({ months }) => `${urlParams.subText || 'subscribed for'} <i class="fa-solid fa-star"></i> <strong>${months || 1} ${(months && months > 1) ? 'months' : 'month'}</strong>`,
     gift: ({ gift, count, coins }) => `${urlParams.giftText || 'gifted'} <strong>${gift} x${count}</strong> (🪙 <strong>${coins} ${(coins && coins > 1) ? 'coins' : 'coin'})</strong>`,
   }
