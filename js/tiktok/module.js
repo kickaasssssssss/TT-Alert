@@ -9,15 +9,15 @@
 
 const showTikTokMessages            = getURLParam("showTikTokMessages", true);
 const showTikTokFollows             = getURLParam("showTikTokFollows", true);
+const showTikTokLikes               = getURLParam("showTikTokLikes", true);
 const showTikTokGifts               = getURLParam("showTikTokGifts", true);
+const showTikTokShare               = getURLParam("showTikTokShare", true);
 const showTikTokSubs                = getURLParam("showTikTokSubs", true);
 const showTikTokStatistics          = getURLParam("showTikTokStatistics", true);
 
 userColors.set('tiktok', new Map());
 
 if (showTikTokStatistics == false) { document.querySelector('#statistics #tiktok').style.display = 'none'; }
-
-
 
 streamerBotClient.on('General.Custom', (response) => {
     if (response.data.platform === 'TikTok') {
@@ -35,6 +35,10 @@ streamerBotClient.on('General.Custom', (response) => {
             case 'follow' : 
                 console.log('TikTok Follow', jsonData);
                 tiktokFollowMessage(jsonData);
+            break;
+            case 'share' : 
+                console.log('TikTok Share', jsonData);
+                tiktokShareMessage(jsonData);
             break;
             case 'subscribe' : 
                 console.log('TikTok Sub', jsonData);
@@ -142,7 +146,31 @@ async function tiktokFollowMessage(data) {
     triggerAlert(messageData);
 }
 
+async function tiktokShareMessage(data) {
+    
+    if (showTikTokShare == false) return;
 
+    const {
+        userId: userID,
+        msgId: messageID,
+        profilePictureUrl: avatar,
+        nickname: userName,
+    } = data;
+
+    const message = currentLang.tiktok.share();
+    const classes = 'share'
+
+    const messageData = {
+        classes: classes,
+        avatar,
+        badges: '',
+        userName,
+        color: '#FFF',
+        message,
+        reply: '',
+    };
+    triggerAlert(messageData);
+}
 
 async function tiktokSubMessage(data) {
     
