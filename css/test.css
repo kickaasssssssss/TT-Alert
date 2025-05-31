@@ -10,7 +10,8 @@
 }
 
 .alert {
-    background: rgba(192, 35, 7, 0.808);
+    background: #020024;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 172, 207, 1) 100%);
     color: #fff;
     padding: 12px 20px;
     border-radius: 12px;
@@ -23,6 +24,17 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.alert .text strong {  /* username font */
+  color: #ffffff; 
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+
+} 
+
+.alert .text {
+  color: #fff;  /* event font */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 .alert.show {
