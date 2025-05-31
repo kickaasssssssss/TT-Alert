@@ -29,17 +29,16 @@
 .alert .text strong {  /* username font */
   color: #ffffff; 
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  max-width: 200px;  /* or whatever fits your layout */
-  word-wrap: break-word;  /* ensures long words/wrds don’t overflow */
-  overflow-wrap: anywhere; /* helps break long strings like URLs */
-  white-space: normal; /* allows text to wrap */
-  line-height: 1.4; /* optional: improves readability */
-
 } 
 
 .alert .text {
   color: #fff;  /* event font */
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  max-width: 200px;  /* or whatever fits your layout */
+  word-wrap: break-word;  /* ensures long words/wrds don’t overflow */
+  overflow-wrap: anywhere; /* helps break long strings like URLs */
+  white-space: normal; /* allows text to wrap */
+  line-height: 1.4; /* optional: improves readability */
 }
 
 .alert.show {
