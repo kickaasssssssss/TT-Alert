@@ -40,9 +40,12 @@ function processQueue() {
     alert.classList.add('follow');
   } else if (lowerMsg.includes('gift')) {
     alert.classList.add('gift');
-  } else if (lowerMsg.includes('subscrib')) {
+  } else if (lowerMsg.includes('subscribe')) {
     alert.classList.add('sub');
+  } else if (lowerMsg.includes('share')) {
+    alert.classList.add('share');
   } else {
+
     alert.classList.add('default');
   }
 
