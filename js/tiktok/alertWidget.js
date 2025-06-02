@@ -11,6 +11,14 @@ const defaultSoundURL = 'https://www.myinstants.com/media/sounds/kyahh-walter.mp
 const soundURL = params.get('sound') || defaultSoundURL;
 let isMuted = params.get('mute') === '1';
 
+// Event toggles (default to 1 if not set)
+const eventToggles = {
+  follow: params.get('follow') !== '0',
+  gift: params.get('gift') !== '0',
+  share: params.get('share') !== '0',
+  subscribe: params.get('subscribe') !== '0',
+};
+
 // Audio object
 const alertSound = new Audio(soundURL);
 alertSound.volume = 1; // adjust volume if needed
@@ -33,22 +41,21 @@ function processQueue() {
   const { avatar, userName, message } = alertQueue.shift();
   const lowerMsg = message.toLowerCase();
 
-  const alert = document.createElement('div');
-  alert.classList.add('alert');
+  // Determine alert type
+  let alertType = 'default';
+  if (lowerMsg.includes('follow')) alertType = 'follow';
+  else if (lowerMsg.includes('gift')) alertType = 'gift';
+  else if (lowerMsg.includes('subscribe')) alertType = 'subscribe';
+  else if (lowerMsg.includes('share')) alertType = 'share';
 
-  if (lowerMsg.includes('follow')) {
-    alert.classList.add('follow');
-  } else if (lowerMsg.includes('gift')) {
-    alert.classList.add('gift');
-  } else if (lowerMsg.includes('subscribe')) {
-    alert.classList.add('sub');
-  } else if (lowerMsg.includes('share')) {
-    alert.classList.add('share');
-  } else {
-
-    alert.classList.add('default');
+  // Check if this alert type is enabled
+  if (!eventToggles[alertType]) {
+    processQueue(); // skip this alert and go to the next
+    return;
   }
 
+  const alert = document.createElement('div');
+  alert.classList.add('alert', alertType);
   alert.style.setProperty('--duration', alertDurationSec);
 
   alert.innerHTML = `
